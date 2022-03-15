@@ -1,17 +1,24 @@
 import type { AWS } from "@serverless/typescript";
+import {
+  createTodo,
+  getAllTodos,
+  updateTodo,
+  deleteTodo,
+} from "@functions/todo";
 
 const serverlessConfiguration: AWS = {
   service: "todo-sls",
   frameworkVersion: "3",
   plugins: [
     "serverless-esbuild",
-    "serverless-offline",
     "serverless-dynamodb-local",
+    "serverless-offline",
   ],
   provider: {
     name: "aws",
     runtime: "nodejs14.x",
-    // stage: "${opt:stage, 'dev'}" as string,
+    stage: "dev",
+    region: "us-east-2",
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
@@ -41,7 +48,7 @@ const serverlessConfiguration: AWS = {
     },
   },
   // import the function via paths
-  functions: {},
+  functions: { getAllTodos, createTodo, updateTodo, deleteTodo },
   package: { individually: true },
   custom: {
     esbuild: {
@@ -56,7 +63,7 @@ const serverlessConfiguration: AWS = {
     },
     dynamodb: {
       start: {
-        port: 5000,
+        port: 8080,
         inMemory: true,
         migrate: true,
       },

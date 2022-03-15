@@ -19,32 +19,42 @@ export default class TodoService {
 
   // take in a todo object and add as a todo item to the db
   async createTodo(todo: Todo): Promise<Todo> {
-    await this.documentClient.put({
-      TableName: this.tableName,
-      Item: todo,
-    }).promise;
+    await this.documentClient
+      .put({
+        TableName: this.tableName,
+        Item: todo,
+      })
+      .promise();
     return todo as Todo;
   }
 
   // take a todo id and update the item's label & completed status in the db
+  // @ts-ignore
   async updateTodo(id: string, partialTodo: Partial<Todo>): Promise<Todo> {
-    const updated = await this.documentClient
-      .update({
-        TableName: this.tableName,
-        Key: { id },
-        UpdateExpression:
-          "set #label = :label, completed = :completed, updatedAt = :updatedAt",
-        ExpressionAttributeNames: {
-          "#label": "label",
-        },
-        ExpressionAttributeValues: {
-          ":label": partialTodo.label,
-          ":completed": partialTodo.completed,
-          ":updatedAt": partialTodo.updatedAt,
-        },
-        ReturnValues: "ALL_NEW",
-      })
-      .promise();
+    const params = {
+      TableName: this.tableName,
+      Key: { id },
+      UpdateExpression: "set ",
+      ConditionExpression: "attribute_exists(id)",
+      // ExpressionAttributeNames: {
+      //   "#label": "label",
+      // },
+      ExpressionAttributeValues: {},
+      ReturnValues: "ALL_NEW",
+    };
+    if (partialTodo.label && typeof partialTodo.label !== "undefined") {
+      params.UpdateExpression = `${params.UpdateExpression}label = :label, `;
+      params.ExpressionAttributeValues[":label"] = partialTodo.label;
+    }
+    if (typeof partialTodo.completed !== "undefined") {
+      params.UpdateExpression = `${params.UpdateExpression}completed = :completed, `;
+      params.ExpressionAttributeValues[":completed"] = partialTodo.completed;
+    }
+    if (partialTodo.label || typeof partialTodo.completed !== "undefined") {
+      params.UpdateExpression = `${params.UpdateExpression}updatedAt = :updatedAt`;
+      params.ExpressionAttributeValues[":updatedAt"] = new Date().toISOString();
+    }
+    const updated = await this.documentClient.update(params).promise();
     return updated.Attributes as Todo;
   }
 
