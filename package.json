@@ -4,7 +4,7 @@
   "description": "Serverless aws-nodejs-typescript template",
   "main": "serverless.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha -r ts-node/register ./src/**/*.spec.ts",
     "start": "serverless offline start"
   },
   "engines": {
@@ -21,15 +21,22 @@
   "devDependencies": {
     "@serverless/typescript": "^3.0.0",
     "@types/aws-lambda": "^8.10.71",
+    "@types/chai": "^4.3.0",
+    "@types/mocha": "^9.1.0",
     "@types/node": "^14.14.25",
+    "@types/sinon": "^10.0.11",
     "@types/uuid": "^8.3.4",
+    "chai": "^4.3.6",
     "esbuild": "^0.14.11",
     "json-schema-to-ts": "^1.5.0",
+    "mocha": "^9.2.2",
     "prettier": "^2.5.1",
     "serverless": "^3.0.0",
     "serverless-dynamodb-local": "^0.2.40",
     "serverless-esbuild": "^1.23.3",
+    "serverless-mocha-plugin": "^1.12.0",
     "serverless-offline": "^8.5.0",
+    "sinon": "^13.0.1",
     "ts-node": "^10.4.0",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^4.1.3"

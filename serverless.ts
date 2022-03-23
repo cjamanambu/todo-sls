@@ -11,6 +11,7 @@ const serverlessConfiguration: AWS = {
   frameworkVersion: "3",
   plugins: [
     "serverless-esbuild",
+    "serverless-mocha-plugin",
     "serverless-dynamodb-local",
     "serverless-offline",
   ],
