@@ -5,8 +5,8 @@ This project is an API that uses the following technologies to enable CRUD capab
 - [TypeScript](https://www.typescriptlang.org/)
 - [AWS (Lambda, API Gateway, DynamoDB)](https://aws.amazon.com/)
 - [Serverless Framework](https://www.serverless.com/framework/docs/)
-- Unit Testing & Mocking using Mocha and Sinon
-- E2E Testing using Mocha and Supertest
+- Unit Testing & Mocking using [Mocha](https://mochajs.org/) and [Sinon](https://sinonjs.org/)
+- E2E Testing using [Mocha]() and [Supertest](https://www.npmjs.com/package/supertest)
 
 ## Getting Started
 
@@ -102,5 +102,5 @@ Currently, you may run into trouble using DynamoDB locally with the new M1 Apple
 The following are the rationale for a few decisions I made and the overall experience I had:
 
 - I could've set up sort keys to use for sorting the to-dos coming from the DynamoDB table. However, the fact that I had to use the more recent of createdAt and updatedAt meant extra complexity, so I just used a helper function to sort the result after scanning the table.
-- I'm still trying to find the best way to handle tests with Mocha. There is a plugin for the Serverless Framework called `serverless-mocha-plugin` but it currently doesn't support Typescript and could be why I'm having difficulty using it to test.
+- I'm still trying to find the best way to handle tests with Mocha. There is a plugin for the Serverless Framework called [serverless-mocha-plugin](https://github.com/nordcloud/serverless-mocha-plugin), but it currently doesn't support Typescript and could be why I'm having difficulty using it to test.
 - Please, if you have workarounds for this, feel free to reach out to me. Thank you.
